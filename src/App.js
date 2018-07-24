@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { listTypes } from './services/pokeapiService';
+import TypeItem from './components/typeItem/TypeItem';
 
 class App extends Component {
   constructor() {
@@ -23,7 +24,7 @@ class App extends Component {
       <div className="App">
         {
           this.state.types.map(
-            (type, i) => (<p key={i}>{type}</p>)
+            (type, i) => <TypeItem key={i} name={type}/>
           )
         }
         <header className="App-header">
