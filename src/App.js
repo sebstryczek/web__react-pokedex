@@ -56,9 +56,14 @@ class App extends Component {
               <button onClick={this.deselectType}>x</button>
             </div>
             :
+            <div className="d-flex flex-row flex-wrap m-3">
+            {
+
             this.state.types.map(
               (type, i) => <TypeItem key={i} name={type} onItemClick={this.selectType} />
             )
+            }
+            </div>
         }
       </div>
     );
