@@ -15,8 +15,10 @@ class App extends Component {
   }
 
   componentDidMount = async () => {
+    this.setState({ isLoading: true });
     const res = await listTypes();
     this.setState({
+      isLoading: false,
       types: res.map( x => x.name )
     })
   }
