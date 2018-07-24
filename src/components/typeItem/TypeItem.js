@@ -1,8 +1,9 @@
 import React from 'react';
 
-const TypeItem = ({ name }) => {
+const TypeItem = ({ name, onItemClick }) => {
+  const onClick = () => onItemClick(name);
   return (
-    <li>
+    <li onClick={ onClick }>
       { name }
     </li>
   );
