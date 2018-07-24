@@ -13,3 +13,14 @@ export const listTypes = async () => {
   
   return res.data.results;
 }
+
+export const findPokemonsByType = async typeId => {
+  const res = await asyncWrapper( axios.get(`${baseUrl}/type/${typeId}1`) );
+  
+  if (res.error) {
+    console.error(res.error);
+    return [];
+  }
+  
+  return res.data.pokemon;
+}
