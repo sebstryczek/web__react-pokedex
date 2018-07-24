@@ -2,7 +2,11 @@ import React from 'react';
 
 const PokemonItem = ({ name }) => {
   return (
-    <span>{name}</span>
+    <div className="card text-center m-2">
+      <div className="card-body">
+        {name}
+      </div>
+    </div>
   );
 };
 

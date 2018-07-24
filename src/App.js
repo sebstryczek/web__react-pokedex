@@ -16,11 +16,11 @@ class App extends Component {
 
   componentDidMount = async () => {
     this.setState({ isLoading: true });
+
     const res = await listTypes();
-    this.setState({
-      isLoading: false,
-      types: res.map( x => x.name )
-    })
+    const types = res.map(x => x.name)
+      .filter(x => x !== 'unknown' && x !== 'shadow');
+    this.setState({ isLoading: false, types })
   }
 
   selectType = async type => {
@@ -29,7 +29,7 @@ class App extends Component {
     this.setState({
       isLoading: false,
       selectedType: type,
-      pokemons: res.map( x => x.pokemon.name )
+      pokemons: res.map(x => x.pokemon.name)
     })
   }
 
@@ -47,22 +47,26 @@ class App extends Component {
         {
           this.state.selectedType ?
             <div>
-              <p>{this.state.selectedType}</p>
-              {
-                this.state.pokemons.map(
-                  (pokemon, i) => <PokemonItem key={i} name={pokemon}/>
-                )
-              }
-              <button onClick={this.deselectType}>x</button>
+              <div className="d-flex justify-content-between m-4">
+                <h2>{this.state.selectedType}</h2>
+                <button className="btn btn-small" onClick={this.deselectType}>x</button>
+              </div>
+              <div className="d-flex justify-content-start flex-wrap m-3">
+                {
+                  this.state.pokemons.map(
+                    (pokemon, i) => <PokemonItem key={i} name={pokemon} />
+                  )
+                }
+              </div>
             </div>
             :
-            <div className="d-flex flex-row flex-wrap m-3">
-            {
+            <div className="d-flex justify-content-start flex-wrap m-3">
+              {
 
-            this.state.types.map(
-              (type, i) => <TypeItem key={i} name={type} onItemClick={this.selectType} />
-            )
-            }
+                this.state.types.map(
+                  (type, i) => <TypeItem key={i} name={type} onItemClick={this.selectType} />
+                )
+              }
             </div>
         }
       </div>
