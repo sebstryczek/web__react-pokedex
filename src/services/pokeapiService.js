@@ -15,7 +15,7 @@ export const listTypes = async () => {
 }
 
 export const findPokemonsByType = async typeId => {
-  const res = await asyncWrapper( axios.get(`${baseUrl}/type/${typeId}1`) );
+  const res = await asyncWrapper( axios.get(`${baseUrl}/type/${typeId}`) );
   
   if (res.error) {
     console.error(res.error);
