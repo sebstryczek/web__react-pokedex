@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import { listTypes, findPokemonsByType } from './services/pokeapiService';
+import PokemonItem from './components/pokemonItem/PokemonItem';
 import TypeItem from './components/typeItem/TypeItem';
 
 class App extends Component {
@@ -16,14 +16,16 @@ class App extends Component {
   componentDidMount = async () => {
     const res = await listTypes();
     this.setState({
-      types: res.map(x => x.name)
+      types: res.map( x => x.name )
     })
   }
 
   selectType = async type => {
     const res = await findPokemonsByType(type);
-    console.log(res)
-    this.setState({ selectedType: type })
+    this.setState({
+      selectedType: type,
+      pokemons: res.map( x => x.pokemon.name )
+    })
   }
 
   deselectType = () => {
@@ -37,6 +39,11 @@ class App extends Component {
           this.state.selectedType ?
             <div>
               <p>{this.state.selectedType}</p>
+              {
+                this.state.pokemons.map(
+                  (pokemon, i) => <PokemonItem key={i} name={pokemon}/>
+                )
+              }
               <button onClick={this.deselectType}>x</button>
             </div>
             :
