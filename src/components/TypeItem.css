@@ -1,0 +1,8 @@
+.type-item {
+  cursor: pointer;
+  background: #ffffff;
+}
+
+.type-item:hover {
+  background: #999999;
+}

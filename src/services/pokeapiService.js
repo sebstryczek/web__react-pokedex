@@ -4,23 +4,23 @@ import asyncWrapper from '../utils/asyncWrapper';
 const baseUrl = 'https://pokeapi.co/api/v2';
 
 export const listTypes = async () => {
-  const res = await asyncWrapper( axios.get(`${baseUrl}/type`) );
+  const res = await asyncWrapper(axios.get(`${baseUrl}/type`));
 
   if (res.error) {
     console.error(res.error);
     return [];
   }
-  
+
   return res.data.results;
 }
 
 export const findPokemonsByType = async typeId => {
-  const res = await asyncWrapper( axios.get(`${baseUrl}/type/${typeId}`) );
-  
+  const res = await asyncWrapper(axios.get(`${baseUrl}/type/${typeId}`));
+
   if (res.error) {
     console.error(res.error);
     return [];
   }
-  
+
   return res.data.pokemon;
 }

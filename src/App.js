@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { listTypes, findPokemonsByType } from './services/pokeapiService';
-import PokemonItem from './components/PokemonItem';
-import TypeItem from './components/TypeItem';
 import LoadingScreen from './components/LoadingScreen';
+import PokemonsList from './components/PokemonsList';
+import TypesList from './components/TypesList';
 
 class App extends Component {
   constructor() {
@@ -10,31 +10,30 @@ class App extends Component {
     this.state = {
       isLoading: false,
       types: [],
-      selectedType: null
+      selectedType: null,
+      selectedTypeNames: []
     };
   }
 
   componentDidMount = async () => {
     this.setState({ isLoading: true });
+
     const res = await listTypes();
-    this.setState({
-      isLoading: false,
-      types: res.map( x => x.name )
-    })
+    const types = res.map(x => x.name)
+      .filter(x => x !== 'unknown' && x !== 'shadow');
+    this.setState({ isLoading: false, types })
   }
 
   selectType = async type => {
     this.setState({ isLoading: true });
+
     const res = await findPokemonsByType(type);
-    this.setState({
-      isLoading: false,
-      selectedType: type,
-      pokemons: res.map( x => x.pokemon.name )
-    })
+    const selectedTypeNames = res.map(x => x.pokemon.name);
+    this.setState({ isLoading: false, selectedType: type, selectedTypeNames })
   }
 
   deselectType = () => {
-    this.setState({ selectedType: null })
+    this.setState({ selectedType: null, selectedTypeNames: [] })
   }
 
   render() {
@@ -43,22 +42,17 @@ class App extends Component {
         {
           this.state.isLoading ? <LoadingScreen /> : null
         }
-
         {
-          this.state.selectedType ?
-            <div>
-              <p>{this.state.selectedType}</p>
-              {
-                this.state.pokemons.map(
-                  (pokemon, i) => <PokemonItem key={i} name={pokemon}/>
-                )
-              }
-              <button onClick={this.deselectType}>x</button>
-            </div>
+          this.state.selectedType
+            ?
+            <PokemonsList
+              type={this.state.selectedType}
+              names={this.state.selectedTypeNames}
+              onClose={this.deselectType} />
             :
-            this.state.types.map(
-              (type, i) => <TypeItem key={i} name={type} onItemClick={this.selectType} />
-            )
+            <TypesList
+              types={this.state.types}
+              onSelect={this.selectType} />
         }
       </div>
     );
