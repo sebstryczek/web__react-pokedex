@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import './App.css';
 import { listTypes, findPokemonsByType } from './services/pokeapiService';
-import PokemonItem from './components/pokemonItem/PokemonItem';
-import TypeItem from './components/typeItem/TypeItem';
+import PokemonItem from './components/PokemonItem';
+import TypeItem from './components/TypeItem';
 import LoadingScreen from './components/LoadingScreen';
 
 class App extends Component {
