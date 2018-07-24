@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { listTypes, findPokemonsByType } from './services/pokeapiService';
-import PokemonItem from './components/PokemonItem';
-import TypesList from './components/TypesList';
 import LoadingScreen from './components/LoadingScreen';
+import PokemonsList from './components/PokemonsList';
+import TypesList from './components/TypesList';
 
 class App extends Component {
   constructor() {
@@ -10,7 +10,8 @@ class App extends Component {
     this.state = {
       isLoading: false,
       types: [],
-      selectedType: null
+      selectedType: null,
+      selectedTypeNames: []
     };
   }
 
@@ -25,16 +26,14 @@ class App extends Component {
 
   selectType = async type => {
     this.setState({ isLoading: true });
+
     const res = await findPokemonsByType(type);
-    this.setState({
-      isLoading: false,
-      selectedType: type,
-      pokemons: res.map(x => x.pokemon.name)
-    })
+    const selectedTypeNames = res.map(x => x.pokemon.name);
+    this.setState({ isLoading: false, selectedType: type, selectedTypeNames })
   }
 
   deselectType = () => {
-    this.setState({ selectedType: null })
+    this.setState({ selectedType: null, selectedTypeNames: [] })
   }
 
   render() {
@@ -43,24 +42,17 @@ class App extends Component {
         {
           this.state.isLoading ? <LoadingScreen /> : null
         }
-
         {
-          this.state.selectedType ?
-            <div>
-              <div className="d-flex justify-content-between m-4">
-                <h2>{this.state.selectedType}</h2>
-                <button className="btn btn-small" onClick={this.deselectType}>x</button>
-              </div>
-              <div className="d-flex justify-content-start flex-wrap m-3">
-                {
-                  this.state.pokemons.map(
-                    (pokemon, i) => <PokemonItem key={i} name={pokemon} />
-                  )
-                }
-              </div>
-            </div>
-          :
-          <TypesList types={this.state.types} onSelect={this.selectType} />
+          this.state.selectedType
+            ?
+            <PokemonsList
+              type={this.state.selectedType}
+              names={this.state.selectedTypeNames}
+              onClose={this.deselectType} />
+            :
+            <TypesList
+              types={this.state.types}
+              onSelect={this.selectType} />
         }
       </div>
     );
