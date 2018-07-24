@@ -3,11 +3,13 @@ import './App.css';
 import { listTypes, findPokemonsByType } from './services/pokeapiService';
 import PokemonItem from './components/pokemonItem/PokemonItem';
 import TypeItem from './components/typeItem/TypeItem';
+import LoadingScreen from './components/LoadingScreen';
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
+      isLoading: false,
       types: [],
       selectedType: null
     };
@@ -21,8 +23,10 @@ class App extends Component {
   }
 
   selectType = async type => {
+    this.setState({ isLoading: true });
     const res = await findPokemonsByType(type);
     this.setState({
+      isLoading: false,
       selectedType: type,
       pokemons: res.map( x => x.pokemon.name )
     })
@@ -35,6 +39,10 @@ class App extends Component {
   render() {
     return (
       <div className="App">
+        {
+          this.state.isLoading ? <LoadingScreen /> : null
+        }
+
         {
           this.state.selectedType ?
             <div>
