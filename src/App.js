@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { listTypes, findPokemonsByType } from './services/pokeapiService';
 import PokemonItem from './components/PokemonItem';
-import TypeItem from './components/TypeItem';
+import TypesList from './components/TypesList';
 import LoadingScreen from './components/LoadingScreen';
 
 class App extends Component {
@@ -59,15 +59,8 @@ class App extends Component {
                 }
               </div>
             </div>
-            :
-            <div className="d-flex justify-content-start flex-wrap m-3">
-              {
-
-                this.state.types.map(
-                  (type, i) => <TypeItem key={i} name={type} onItemClick={this.selectType} />
-                )
-              }
-            </div>
+          :
+          <TypesList types={this.state.types} onSelect={this.selectType} />
         }
       </div>
     );
